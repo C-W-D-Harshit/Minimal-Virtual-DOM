@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+    <script src="vdom.js"></script>
+    <script>
+      let count = 0;
+      let oldTree = null;
+      const root = document.getElementById("root");
+
+      function app() {
+        return h(
+          "div",
+          {},
+          h("h1", {}, `Count: ${count}`),
+          h(
+            "button",
+            {
+              onClick: () => {
+                count++;
+                update();
+              },
+              style: {
+                backgroundColor: "blue",
+                color: "white",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                border: "none",
+                cursor: "pointer",
+              },
+            },
+            "Increment"
+          )
+        );
+      }
+
+      function update() {
+        const newTree = app();
+        if (oldTree) {
+          diff(root, oldTree, newTree, 0);
+        } else {
+          root.appendChild(render(newTree));
+        }
+        oldTree = newTree;
+      }
+
+      update();
+    </script>
+  </body>
+</html>
